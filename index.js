@@ -1,17 +1,20 @@
 const express = require('express')
 const httpProxy = require('http-proxy')
+const http = require('http')
 const app = express()
 
-const PORT = 3333
-const frontend = 8888
+const port = 3000
+const anotherPort = 8000
 
 if (process.env.NODE_ENV !== 'production') {
-  const proxy = httpProxy.createProxyServer({ target: `http://localhost:${PORT}` })
-  proxy.listen(FRONTEND)
+  const proxy = httpProxy.createProxyServer({ target: `http://localhost:${port}` })
+  proxy.listen(anotherPort)
 }
 
 app.get('/', (req, res) => {
   res.send('hello world')
 })
 
-app.listen(PORT, () => console.log(`Listening to 3333\nalso navigate 8888 -> 3333`))
+const server = http.createServer(app)
+
+server.listen(port, () => console.log(`Listening to ${port}\nalso navigate ${anotherPort} -> ${port}`))
