@@ -5,13 +5,9 @@ const app = express()
 const PORT = 3333
 const frontend = 8888
 
-switch (process.env.NODE_ENV) {
-  case 'production':
-    break
-
-  default:
-    const proxy = httpProxy.createProxyServer({ target: 'http://localhost:3333' })
-    proxy.listen(frontend)
+if (process.env.NODE_ENV !== 'production') {
+  const proxy = httpProxy.createProxyServer({ target: `http://localhost:${PORT}` })
+  proxy.listen(FRONTEND)
 }
 
 app.get('/', (req, res) => {
